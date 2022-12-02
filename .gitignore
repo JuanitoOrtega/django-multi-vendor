@@ -457,3 +457,6 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/python,venv,pycharm,django,windows,linux,macos
+
+# Custom
+HTML_Template/
