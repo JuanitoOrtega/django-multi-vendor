@@ -9,6 +9,15 @@ class CustomUserAdmin(UserAdmin):
     filter_horizontal = []
     list_filter = []
     fieldsets = []
+
+
+class UserProfileAdmin(admin.ModelAdmin):
+    list_display = ['user', 'phone_number', 'country', 'state', 'city']
+    ordering = ['-user']
+    filter_horizontal = []
+    list_filter = []
+    fieldsets = []
+
     
 admin.site.register(User, CustomUserAdmin)
-admin.site.register(UserProfile)
+admin.site.register(UserProfile, UserProfileAdmin)
