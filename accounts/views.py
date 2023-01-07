@@ -76,3 +76,15 @@ def registerVendor(request):
     }
 
     return render(request, 'accounts/registervendor.html', context)
+
+
+def login(request):
+    return render(request, 'accounts/login.html')
+
+
+def logout(request):
+    pass
+
+
+def dashboard(request):
+    pass
