@@ -1,11 +1,13 @@
 from django.shortcuts import redirect, render
-from accounts.utils import detecUser
+from accounts.utils import detecUser, send_verification_email
 from .forms import UserForm
 from .models import User, UserProfile
 from django.contrib import messages, auth
 from vendors.forms import VendorForm
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.exceptions import PermissionDenied
+from django.utils.http import urlsafe_base64_decode
+from django.contrib.auth.tokens import default_token_generator
 
 
 # Restrict the vendor from accessing the customer page
@@ -27,7 +29,7 @@ def check_role_customer(user):
 def registerUser(request):
     if request.user.is_authenticated:
         messages.warning(request, 'Ya tienes una sesión activa!')
-        return redirect('dashboard')
+        return redirect('my_account')
     elif request.method == 'POST':
         # print(request.POST)
         form = UserForm(request.POST)
@@ -49,10 +51,16 @@ def registerUser(request):
             user = User.objects.create_user(first_name=first_name, last_name=last_name, username=username, email=email, password=password)
             user.role = User.CUSTOMER
             user.save()
+
+            # Send verification email
+            mail_subject = 'Activar cuenta'
+            email_template = 'accounts/emails/account_verification_email.html'
+            send_verification_email(request, user, mail_subject, email_template)
+
             messages.success(request, 'Su cuenta ha sido registrada con éxito!')
             return redirect('register_user')
         else:
-            print('Invalid form')
+            print('Formulario no válido!')
             print(form.errors)
     else:
         form = UserForm()
@@ -61,13 +69,13 @@ def registerUser(request):
         'form': form,
     }
     
-    return render(request, 'accounts/registeruser.html', context)
+    return render(request, 'accounts/register_user.html', context)
 
 
 def registerVendor(request):
     if request.user.is_authenticated:
         messages.warning(request, 'Ya tienes una sesión activa!')
-        return redirect('dashboard')
+        return redirect('my_account')
     elif request.method == 'POST':
         # store the data and create the user
         form = UserForm(request.POST)
@@ -86,7 +94,13 @@ def registerVendor(request):
             user_profile = UserProfile.objects.get(user=user)
             vendor.user_profile = user_profile
             vendor.save()
-            messages.success(request, 'El formulario fue enviado con éxito! Por favor espere su aprobación.')
+
+            # Send verification email
+            mail_subject = 'Activar cuenta'
+            email_template = 'accounts/emails/account_verification_email.html'
+            send_verification_email(request, user, mail_subject, email_template)
+
+            messages.success(request, 'Tu cuenta se ha creado exitosamente! Por favor espera su aprobación.')
             return redirect('register_vendor')
         else:
             print('Formulario inválido')
@@ -100,7 +114,25 @@ def registerVendor(request):
         'v_form': v_form,
     }
 
-    return render(request, 'accounts/registervendor.html', context)
+    return render(request, 'accounts/register_vendor.html', context)
+
+
+def activate(request, uidb64, token):
+    # Activate the user by setting the is_active status to True
+    try:
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = User._default_manager.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+        user.is_active = True
+        user.save()
+        messages.success(request, 'Felicidades! Cuenta activada.')
+        return redirect('my_account')
+    else:
+        messages.error(request, 'Enlace de activación inválido.')
+        return redirect('my_account')
 
 
 def login(request):
@@ -123,28 +155,83 @@ def login(request):
     return render(request, 'accounts/login.html')
 
 
-@login_required(login_url = 'login')
+@login_required(login_url='login')
 def logout(request):
     auth.logout(request)
     messages.info(request, 'Sesión cerrada correctamente!')
     return redirect('login')
 
 
-@login_required(login_url = 'login')
+@login_required(login_url='login')
 def myAccount(request):
     user = request.user
     redirectUrl = detecUser(user)
     return redirect(redirectUrl)
 
 
-@login_required(login_url = 'login')
+@login_required(login_url='login')
 @user_passes_test(check_role_customer)
 def customerDashboard(request):
-    return render(request, 'accounts/customerdashboard.html')
+    return render(request, 'accounts/customer_dashboard.html')
 
 
-@login_required(login_url = 'login')
+@login_required(login_url='login')
 @user_passes_test(check_role_vendor)
 def vendorDashboard(request):
-    return render(request, 'accounts/vendordashboard.html')
+    return render(request, 'accounts/vendor_dashboard.html')
 
+
+def forgotPassword(request):
+    if request.method == 'POST':
+        email = request.POST['email']
+
+        if User.objects.filter(email=email).exists():
+            user = User.objects.get(email__exact=email)
+
+            # send reset password email
+            mail_subject = 'Restablecer contraseña'
+            email_template = 'accounts/emails/reset_password_email.html'
+            send_verification_email(request, user, mail_subject, email_template)
+
+            messages.success(request, 'Un enlace de restablecimiento de contraseña se ha enviado a su dirección de correo electrónico.')
+            return redirect('login')
+        else:
+            messages.error(request, 'La cuenta no existe.')
+            return redirect('forgot_password')
+    return render(request, 'accounts/forgot_password.html')
+
+
+def resetPasswordValidate(request, uidb64, token):
+    # Validate the user by decoding the token and user pk
+    try:
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = User._default_manager.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+    
+    if user is not None and default_token_generator.check_token(user, token):
+        request.session['uid'] = uid
+        messages.info(request, 'Restablece tu contraseña')
+        return redirect('reset_password')
+    else:
+        messages.error(request, 'Este enlace ha expirado!')
+        return redirect('my_account')
+
+
+def resetPassword(request):
+    if request.method == 'POST':
+        password = request.POST['password']
+        confirm_password = request.POST['confirm_password']
+
+        if password == confirm_password:
+            pk = request.session.get('uid')
+            user = User.objects.get(pk=pk)
+            user.set_password(password)
+            user.is_active = True
+            user.save()
+            messages.success(request, 'Contraseña restablecida exitosamente!')
+            return redirect('login')
+        else:
+            messages.error(request, 'Las contraseñas no coinciden!')
+            return redirect('reset_password')
+    return render(request, 'accounts/reset_password.html')
