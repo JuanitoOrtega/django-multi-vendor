@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+        <!-- Main Section Start -->
+        <div class="main-section">
+            <div class="page-section restaurant-detail-image-section" style=" background: url('{% static 'extra-images/banner-img.jpg' %}') no-repeat scroll 0 0 / cover;">
+                <!-- Container Start -->
+                <div class="container">
+                    <!-- Row Start -->
+                    <div class="row">
+                        <!-- Column Start -->
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="company-info-detail">
+                                <div class="company-info">
+                                    <div class="img-holder">
+                                        <figure>
+                                            <img src="{% static 'extra-images/listing-logo18.png' %}" alt="">
+                                        </figure>
+                                    </div>
+                                    <div class="text-holder">
+                                        <span class="restaurant-title">Restaurant Demo</span>
+                                        <div class="text">
+                                            <i class="icon-location"></i>
+                                            <p>Mark ricardo road, lane 27, Austin, Texas, USA.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Column End -->
+                    </div>
+                    <!-- Row End -->
+                </div>
+                <!-- Container End -->
+            </div>
+            <div class="page-section account-header buyer-logged-in">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                            <div class="user-account-nav user-account-sidebar">
+                                <div class="user-nav-list">
+                                    <ul>
+                                        <li class="active"><a href="restaurant-dashboard.html"><i class="icon-dashboard3"></i>Dashboard</a></li>
+                                        <li><a href="restaurant-restaurant.html"><i class="icon-building"></i>Mi Restaurante</a></li>
+                                        <li><a href="restaurant-menu-builder.html"><i class="icon-menu5"></i>Menú</a></li>
+                                        <li><a href="restaurant-orders.html"><i class="icon-add_shopping_cart"></i>Pedidos</a></li>
+                                        <li><a href="restaurant-earnings.html"><i class="icon-money"></i>Ganancias</a></li>
+                                        <li><a href="restaurant-statement.html"><i class="icon-file-text22"></i>Políticas</a></li>
+                                        <li><a href="restaurant-change-password.html"><i class="icon-unlock-alt"></i>Cambiar contraseña</a></li>
+                                        <li><a class="logout-btn" href="{% url 'logout' %}"><i class="icon-log-out"></i>Cerrar sesión</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                            <div class="user-dashboard loader-holder">
+                                {% include 'includes/alerts.html' %}
+                                <h4>Bienvenido {{ user.username }}</h4>
+                                <p>Es una cuenta tipo: {{ user.get_role }}</p>
+                                <div class="user-holder">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="row">
+                                            <div class="element-title has-border right-filters-row">
+                                                <h5>Pedidos recientes</h5>
+                                                <div class="right-filters row pull-right">
+                                                    <div class="col-lg-6 col-md-6 col-xs-6">
+                                                        <div class="input-field">
+                                                            <select class="chosen-select-no-single">
+                                                                <option selected="selected" value="">Filtrar</option>
+                                                                <option value="Processing">En proceso</option>
+                                                                <option value="Cancelled">Cancelado</option>
+                                                                <option value="Completed">Completado</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <div class="user-orders-list">
+                                                <div class="responsive-table">
+                                                    <ul class="table-generic">
+                                                        <li class="order-heading-titles">
+                                                            <div>ID de pedido</div>
+                                                            <div>Fecha</div>
+                                                            <div>Precio total</div>
+                                                            <div>Cargos</div>
+                                                            <div>Recibido</div>
+                                                            <div>Estado</div>
+                                                        </li>
+                                                        <li class="order-heading-titles">
+                                                            <div><a href="#" data-toggle="modal" data-target="#order-det-22606">order-22606</a></div>
+                                                            <div>Apr 9,2020</div>
+                                                            <div>$ 38.99</div>
+                                                            <div>$ 3.90</div>
+                                                            <div>$ 35.09</div>
+                                                            <div><span class="order-status" style="background-color: #047a06;">Completado</span></div>
+                                                        </li>
+                                                        <li class="order-heading-titles">
+                                                            <div><a href="#" data-toggle="modal" data-target="#order-det-22606">order-22583</a></div>
+                                                            <div>Apr 9,2020</div>
+                                                            <div>$ 26.22</div>
+                                                            <div>$ 2.62</div>
+                                                            <div>$ 23.60</div>
+                                                            <div><span class="order-status" style="background-color: #1e73be;">En proceso</span></div>
+                                                        </li>
+                                                        <li class="order-heading-titles">
+                                                            <div><a href="#" data-toggle="modal" data-target="#order-det-22606">order-22493</a></div>
+                                                            <div>Apr 2,2020</div>
+                                                            <div>£ 28.24</div>
+                                                            <div>£ 2.82</div>
+                                                            <div>£ 25.42</div>
+                                                            <div><span class="order-status" style="background-color: #047a06;">Completado</span></div>
+                                                        </li>
+                                                    </ul>
+                                                </div>												
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Main Section End -->
+{% endblock %}

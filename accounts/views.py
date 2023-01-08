@@ -1,12 +1,34 @@
 from django.shortcuts import redirect, render
+from accounts.utils import detecUser
 from .forms import UserForm
 from .models import User, UserProfile
-from django.contrib import messages
+from django.contrib import messages, auth
 from vendors.forms import VendorForm
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.core.exceptions import PermissionDenied
+
+
+# Restrict the vendor from accessing the customer page
+def check_role_vendor(user):
+    if user.role == 1:
+        return True
+    else:
+        raise PermissionDenied
+
+
+# Restrict the customer from accessing the vendor page
+def check_role_customer(user):
+    if user.role == 2:
+        return True
+    else:
+        raise PermissionDenied
 
 
 def registerUser(request):
-    if request.method == 'POST':
+    if request.user.is_authenticated:
+        messages.warning(request, 'Ya tienes una sesión activa!')
+        return redirect('dashboard')
+    elif request.method == 'POST':
         # print(request.POST)
         form = UserForm(request.POST)
         if form.is_valid():
@@ -43,7 +65,10 @@ def registerUser(request):
 
 
 def registerVendor(request):
-    if request.method == 'POST':
+    if request.user.is_authenticated:
+        messages.warning(request, 'Ya tienes una sesión activa!')
+        return redirect('dashboard')
+    elif request.method == 'POST':
         # store the data and create the user
         form = UserForm(request.POST)
         v_form = VendorForm(request.POST, request.FILES)
@@ -79,12 +104,47 @@ def registerVendor(request):
 
 
 def login(request):
+    if request.user.is_authenticated:
+        messages.warning(request, 'Ya tienes una sesión activa!')
+        return redirect('my_account')
+    elif request.method == 'POST':
+        email = request.POST['email']
+        password = request.POST['password']
+
+        user = auth.authenticate(email=email, password=password)
+
+        if user is not None:
+            auth.login(request, user)
+            messages.success(request, 'Has iniciado sesión correctamente!')
+            return redirect('my_account')
+        else:
+            messages.error(request, 'Correo electrónico/Contraseña incorrectos!')
+            return redirect('login')
     return render(request, 'accounts/login.html')
 
 
+@login_required(login_url = 'login')
 def logout(request):
-    pass
+    auth.logout(request)
+    messages.info(request, 'Sesión cerrada correctamente!')
+    return redirect('login')
 
 
-def dashboard(request):
-    pass
+@login_required(login_url = 'login')
+def myAccount(request):
+    user = request.user
+    redirectUrl = detecUser(user)
+    return redirect(redirectUrl)
+
+
+@login_required(login_url = 'login')
+@user_passes_test(check_role_customer)
+def customerDashboard(request):
+    return render(request, 'accounts/customerdashboard.html')
+
+
+@login_required(login_url = 'login')
+@user_passes_test(check_role_vendor)
+def vendorDashboard(request):
+    return render(request, 'accounts/vendordashboard.html')
+

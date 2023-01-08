@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-from django.db.models.fields.related import ForeignKey, OneToOneField
-
+from django_countries.fields import CountryField
 # from django.contrib.gis.db import models as gismodels
 # from django.contrib.gis.geos import Point
 
@@ -80,6 +79,7 @@ class User(AbstractBaseUser):
         return True
 
     def get_role(self):
+        user_role = None
         if self.role == 1:
             user_role = 'Vendedor'
         elif self.role == 2:
@@ -91,15 +91,16 @@ class User(AbstractBaseUser):
 
 
 class UserProfile(models.Model):
-    user = OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True, verbose_name='Usuario')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True, verbose_name='Usuario')
     profile_picture = models.ImageField(upload_to='users/profile_pictures', blank=True, null=True, verbose_name='Foto de perfil')
     cover_photo = models.ImageField(upload_to='users/cover_photos', blank=True, null=True, verbose_name='Foto de portada')
     phone_number = models.CharField(max_length=12, blank=True, verbose_name='Número de teléfono')
     address_line_1 = models.CharField(max_length=250, blank=True, null=True, verbose_name='Dirección línea 1')
     address_line_2 = models.CharField(max_length=250, blank=True, null=True, verbose_name='Dirección línea 2')
-    country = models.CharField(max_length=15, blank=True, null=True, verbose_name='País')
-    state = models.CharField(max_length=15, blank=True, null=True, verbose_name='Estado/Departamento')
-    city = models.CharField(max_length=15, blank=True, null=True, verbose_name='Ciudad')
+    # country = models.CharField(max_length=30, blank=True, null=True, verbose_name='País')
+    country = CountryField(blank_label='Seleccionar país', blank=True, null=True, verbose_name='País')
+    state = models.CharField(max_length=50, blank=True, null=True, verbose_name='Estado/Departamento')
+    city = models.CharField(max_length=50, blank=True, null=True, verbose_name='Ciudad')
     pin_code = models.CharField(max_length=6, blank=True, null=True, verbose_name='Código PIN')
     latitude = models.CharField(max_length=20, blank=True, null=True, verbose_name='Latitud')
     longitude = models.CharField(max_length=20, blank=True, null=True, verbose_name='Longitud')

@@ -17,3 +17,16 @@ ul.errorlist.nonfield li {
     animation-duration: 8s;
     z-index: 99;
 }
+
+.login-sign-up {
+    color: #333;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.login-sign-up:hover {
+    color: #000;
+    outline: none;
+    text-decoration: none;
+}
