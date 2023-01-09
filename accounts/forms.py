@@ -13,9 +13,9 @@ class UserForm(ModelForm):
         model = User
         fields = ['first_name', 'last_name', 'username', 'email', 'password']
         widgets = {
-            'email': TextInput(
+            'email': EmailInput(
                 attrs={
-                    'type': 'email',
+                    'placeholder': '',
                 }
             )
         }

@@ -1,0 +1,15 @@
+{% autoescape off %}
+
+Hola {{ user.first_name }},
+
+{% if is_approved %}
+Felicidades! Tu restaurante ha sido aprobado por nuestro equipo de administración.
+
+--foodOnline
+{% else %}
+¡Lo sentimos! Por el momento no es elegible para publicar su menú de comida en nuestro sitio web. Para obtener más detalles, comuníquese con support@foodonline.com.
+
+--foodOnline
+{% endif %}
+
+{% endautoescape %}
