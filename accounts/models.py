@@ -95,8 +95,7 @@ class UserProfile(models.Model):
     profile_picture = models.ImageField(upload_to='users/profile_pictures', blank=True, null=True, verbose_name='Foto de perfil')
     cover_photo = models.ImageField(upload_to='users/cover_photos', blank=True, null=True, verbose_name='Foto de portada')
     phone_number = models.CharField(max_length=12, blank=True, verbose_name='Número de teléfono')
-    address_line_1 = models.CharField(max_length=250, blank=True, null=True, verbose_name='Dirección línea 1')
-    address_line_2 = models.CharField(max_length=250, blank=True, null=True, verbose_name='Dirección línea 2')
+    address = models.CharField(max_length=250, blank=True, null=True, verbose_name='Dirección')
     country = CountryField(blank_label='Seleccionar país', blank=True, null=True, verbose_name='País')
     state = models.CharField(max_length=50, blank=True, null=True, verbose_name='Estado/Departamento')
     city = models.CharField(max_length=50, blank=True, null=True, verbose_name='Ciudad')
@@ -112,8 +111,8 @@ class UserProfile(models.Model):
         verbose_name_plural = 'Perfiles'
     
     def full_address(self):
-        if self.address_line_1 and self.address_line_2:
-            return '%s, %s, %s, %s' % (self.address_line_1, self.address_line_2, self.city, self.state)
+        if self.address:
+            return '%s, %s, %s' % (self.address, self.city, self.state)
         else:
             return None
 

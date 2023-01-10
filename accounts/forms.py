@@ -1,5 +1,6 @@
 from django.forms import *
-from .models import User
+from .models import User, UserProfile
+from .validators import allow_only_images_validator
 
 
 class UserForm(ModelForm):
@@ -30,3 +31,22 @@ class UserForm(ModelForm):
 
         if password != confirm_password:
             raise ValidationError('Las contraseñas ingresadas no coinciden')
+
+
+class UserProfileForm(ModelForm):
+    address = CharField(widget=TextInput(attrs={'placeholder': 'Comienza a escribir...', 'required': 'required'}))
+    profile_picture = FileField(widget=FileInput(attrs={'class': 'btn btn-info'}), validators=[allow_only_images_validator])
+    cover_photo = FileField(widget=FileInput(attrs={'class': 'btn btn-info'}), validators=[allow_only_images_validator])
+    # cover_photo = ImageField(widget=FileInput(attrs={'class': 'btn btn-info'}), validators=[allow_only_images_validator])
+
+    # latitude = CharField(widget=TextInput(attrs={'readonly': 'readonly'}))
+    # longitude = CharField(widget=TextInput(attrs={'readonly': 'readonly'}))
+    class Meta:
+        model = UserProfile
+        fields = ['profile_picture', 'cover_photo', 'address', 'country', 'state', 'city', 'pin_code', 'latitude', 'longitude']
+
+    def __init__(self, *args, **kwargs):
+        super(UserProfileForm, self).__init__(*args, **kwargs)
+        for field in self.fields:
+            if field == 'latitude' or field == 'longitude':
+                self.fields[field].widget.attrs['readonly'] = 'readonly'
