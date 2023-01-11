@@ -179,7 +179,7 @@ def customerDashboard(request):
 @login_required(login_url='login')
 @user_passes_test(check_role_vendor)
 def vendorDashboard(request):
-    return render(request, 'accounts/vendor_dashboard.html')
+    return render(request, 'vendors/vendor_dashboard.html')
 
 
 def forgotPassword(request):
