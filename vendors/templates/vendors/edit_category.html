@@ -19,6 +19,7 @@
                                 <div class="user-holder">
                                     <h2 class="text-uppercase">Crea tu menú</h2>
                                     <hr>
+                                    <button class="btn btn-secondary btn-sm float-right" onclick="history.back()"><i class="fa fa-angle-left" aria-hidden="true"></i> Volver</button>
                                     <h6 class="mb-3">Editar categoría</h6>
                                     <!-- Render Form -->
                                     <form action="{% url 'edit_category' category.id %}" method="post">

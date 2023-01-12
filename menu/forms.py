@@ -1,5 +1,5 @@
 from django.forms import *
-from .models import Category
+from .models import Category, FoodItem
 
 
 class CategoryForm(ModelForm):
@@ -18,3 +18,16 @@ class CategoryForm(ModelForm):
         #         }
         #     )
         # }
+
+
+class FoodItemForm(ModelForm):
+    class Meta:
+        model = FoodItem
+        fields = ['category', 'food_title', 'description', 'price', 'image', 'is_available']
+        widgets = {
+            'food_title': TextInput(
+                attrs={
+                    'placeholder': 'Ej. Pizza Napolitana',
+                }
+            )
+        }

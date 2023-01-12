@@ -29,11 +29,11 @@
                                                 <td class="text-left">{{ forloop.counter }}</td>
                                                 <td class="text-left"><img src="{{ food.image.url }}" alt="Foto de {{ food }}" width="40"></td>
                                                 <td class="text-left">
-                                                    <a href="#"><p class="mb-0 font-weight-bold">{{ food }}</p>
-                                                    <small class="text-muted">{{ food.description }}</small></a>
+                                                    <p class="mb-0 font-weight-bold">{{ food }}</p>
+                                                    <small class="text-muted">{{ food.description }}</small>
                                                 </td>
                                                 <td>
-                                                    <i class="fa fa-pencil text-info" aria-hidden="true"></i> &nbsp; <i class="fa fa-trash text-danger" aria-hidden="true"></i>
+                                                    <a href="{% url 'edit_food' food.id %}"><i class="fa fa-pencil text-info" aria-hidden="true"></i></a> &nbsp; <i class="fa fa-trash text-danger" aria-hidden="true"></i>
                                                 </td>
                                             </tr>
                                             {% endfor %}
