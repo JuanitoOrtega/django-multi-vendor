@@ -18,3 +18,7 @@ ul.errorlist.nonfield li {
 span.text-danger ul li {
     font-size: 12px;
 }
+
+.link-food-by-cat:hover {
+    text-decoration: none;
+}

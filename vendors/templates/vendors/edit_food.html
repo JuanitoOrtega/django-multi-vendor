@@ -82,6 +82,7 @@
                                             </div>
                                         </div>
                                         <button type="submit" class="btn btn-success btn-sm"><i class="fa fa-check" aria-hidden="true"></i> Actualizar ítem</button>
+                                        <a href="{% url 'delete_food' food.id %}" onclick="return confirm('¿Estás seguro que quieres eliminar este ítem?');" class="btn btn-danger btn-sm float-right"><i class="fa fa-trash text-danger" aria-hidden="true"></i> Eliminar ítem</a>
                                     </form>
                                 </div>
                             </div>

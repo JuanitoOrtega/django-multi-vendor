@@ -139,7 +139,7 @@ def deleteCategory(request, pk=None):
 
 @login_required(login_url='login')
 @user_passes_test(check_role_vendor)
-def addFood(request):
+def addFoodItem(request):
     if request.method == 'POST':
         form = FoodItemForm(request.POST, request.FILES)
         if form.is_valid():
@@ -154,7 +154,8 @@ def addFood(request):
             print(form.errors)
     else:
         form = FoodItemForm()
-
+        # Modify this form
+        form.fields['category'].queryset = Category.objects.filter(vendor=get_vendor(request))
     context = {
         'form': form,
     }
@@ -164,7 +165,7 @@ def addFood(request):
 
 @login_required(login_url='login')
 @user_passes_test(check_role_vendor)
-def editFood(request, pk=None):
+def editFoodItem(request, pk=None):
     food = get_object_or_404(FoodItem, pk=pk)
     if request.method == 'POST':
         form = FoodItemForm(request.POST, request.FILES, instance=food)
@@ -187,3 +188,12 @@ def editFood(request, pk=None):
         'food': food,
     }
     return render(request, 'vendors/edit_food.html', context)
+
+
+@login_required(login_url='login')
+@user_passes_test(check_role_vendor)
+def deleteFoodItem(request, pk=None):
+    food = get_object_or_404(FoodItem, pk=pk)
+    food.delete()
+    messages.success(request, 'Ítem eliminado exitosamente!')
+    return redirect('fooditems_by_category', food.category.id)

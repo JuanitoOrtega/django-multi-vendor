@@ -12,17 +12,22 @@
                                     <div class="img-holder">
                                         <figure>
                                             {% if vendor.user_profile.profile_picture %}
-                                            <img src="{{ vendor.user_profile.profile_picture.url }}" alt="Portada de {{ vendor.vendor_name }}">
+                                            <img src="{{ vendor.user_profile.profile_picture.url }}" alt="Logo de {{ vendor.vendor_name }}">
                                             {% else %}
-                                            <img src="{% static 'images/demo-restaurant.png' %}" alt="Portada demo">
+                                            <img src="{% static 'images/demo-restaurant.png' %}" alt="Logo demo">
                                             {% endif %}
                                         </figure>
                                     </div>
                                     <div class="text-holder">
                                         <span class="restaurant-title">{{ vendor.vendor_name }}</span>
                                         <div class="text">
+                                            {% if vendor.user_profile.full_address %}
                                             <i class="icon-location"></i>
                                             <p>{{ vendor.user_profile.full_address }}</p>
+                                            {% else %}
+                                            <i class="icon-location"></i>
+                                            <p class="font-italic">Dirección sin especificar</p>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>

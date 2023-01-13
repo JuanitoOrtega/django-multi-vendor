@@ -18,6 +18,7 @@
                                 {% include 'includes/alerts.html' %}
                                 <div class="user-holder">
                                     <h2 class="text-uppercase">Administra tu restaurante</h2>
+									<hr>
 									<!-- My Restaurants Form Start -->
 									<form action="{% url 'v_profile' %}" method="POST" enctype="multipart/form-data">
                                         {% csrf_token %}
@@ -32,7 +33,11 @@
 																		<li class="gal-img">
 																			<div class="drag-list">
 																				<div class="item-thumb">
+																					{% if profile.profile_picture %}
 																					<img class="thumbnail" src="{{ profile.profile_picture.url }}" alt="Logo de {{ vendor.vendor_name }}">
+																					{% else %}
+																					<img src="{% static 'images/demo-restaurant.png' %}" alt="Logo demo">
+																					{% endif %}
 																				</div>
 																			</div>
 																		</li>
@@ -54,7 +59,11 @@
 																		<li class="gal-img">
 																			<div class="drag-list">
 																				<div class="item-thumb">
+																					{% if profile.cover_photo %}
 																					<img class="thumbnail" src="{{ profile.cover_photo.url }}" alt="Portada de {{ vendor.vendor_name }}">
+																					{% else %}
+																					<img src="{% static 'extra-images/cover-photo.jpg' %}" alt="Portada demo">
+																					{% endif %}
 																				</div>
 																			</div>
 																		</li>

@@ -35,8 +35,8 @@ class UserForm(ModelForm):
 
 class UserProfileForm(ModelForm):
     address = CharField(widget=TextInput(attrs={'placeholder': 'Comienza a escribir...', 'required': 'required'}))
-    profile_picture = FileField(widget=FileInput(attrs={'class': 'btn btn-info'}), validators=[allow_only_images_validator])
-    cover_photo = FileField(widget=FileInput(attrs={'class': 'btn btn-info'}), validators=[allow_only_images_validator])
+    # profile_picture = FileField(widget=FileInput(attrs={'class': 'btn btn-info'}), validators=[allow_only_images_validator])
+    # cover_photo = FileField(widget=FileInput(attrs={'class': 'btn btn-info'}), validators=[allow_only_images_validator])
     # cover_photo = ImageField(widget=FileInput(attrs={'class': 'btn btn-info'}), validators=[allow_only_images_validator])
 
     # latitude = CharField(widget=TextInput(attrs={'readonly': 'readonly'}))

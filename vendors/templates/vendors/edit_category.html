@@ -42,6 +42,7 @@
                                             {% endif %}
                                         {% endfor %}
                                         <button type="submit" class="btn btn-info btn-sm"><i class="fa fa-check" aria-hidden="true"></i> Actualizar</button>
+                                        <a href="{% url 'delete_category' category.id %}" onclick="return confirm('¿Estás seguro que quieres eliminar esta categoría?');" class="btn btn-danger btn-sm float-right"><i class="fa fa-trash text-danger" aria-hidden="true"></i> Eliminar categoría</a>
                                     </form>
                                 </div>
                             </div>
