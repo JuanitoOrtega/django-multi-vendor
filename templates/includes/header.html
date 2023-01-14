@@ -4,7 +4,7 @@
             <div class="main-header">
                 <div class="container">
                     <div class="row">
-                        <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                             <div class="logo">
                                 <a href="{% url 'home' %}" class="light-logo">
                                     <img src="{% static 'logo/logo.png' %}" alt="FoodBakery" width="180">
@@ -17,25 +17,28 @@
                                             <input type="text" value="" name="location" placeholder="Enter your delivery location" autocomplete="off">
                                             <span id="foodbakery_radius_location_open" class="foodbakery-radius-location"><i class="icon-target5"></i></span>
                                         </form>
-                                        
                                     </li>
                                 </ul>
                             </div>
                         </div>
-                        <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12 justify-content-right">
-                            <div class="row h-100 d-flex justify-content-end align-items-center">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 d-flex justify-content-end">
+                            <div class="btn-marketplace d-flex align-items-center">
+                                <a href="{% url 'marketplace' %}" class="btn btn-outline-danger btn-sm text-uppercase">Restaurantes</a>
+                            </div>
+                            <div class="login-register-customer d-flex align-items-center">
+                                <span class="mx-3">
+                                    {% if user.is_authenticated %}
+                                    <a href="{% url 'logout' %}" class="login-sign-up">Cerrar sesión</a>
+                                    {% else %}
+                                    <a href="{% url 'login' %}" class="login-sign-up">Entrar</a> / <a href="{% url 'register_user' %}" class="login-sign-up">Registrarse</a>
+                                    {% endif %}
+                                </span>
+                            </div>
+                            <div class="button-register-vendor d-flex align-items-center">
                                 {% if user.is_authenticated %}
-                                <a class="login-sign-up mx-3" href="{% url 'logout' %}">Cerrar sesión</a>
-                                <div class="login-option">
-                                    <a class="get-start-btn" href="{% url 'my_account' %}">Mi cuenta</a>
-                                </div>
+                                <a href="{% url 'my_account' %}" class="btn btn-danger btn-sm text-uppercase">Mi cuenta</a>
                                 {% else %}
-                                <a class="login-sign-up mx-2" href="{% url 'login' %}">Iniciar sesión</a>
-                                /
-                                <a class="login-sign-up mx-2" href="{% url 'register_user' %}">Registrarse</a>
-                                <div class="login-option">
-                                    <a class="get-start-btn" href="{% url 'register_vendor' %}">Registrar Restaurante</a>
-                                </div>
+                                <a href="{% url 'register_vendor' %}" class="btn btn-danger btn-sm text-uppercase">Registrar Restaurante</a>
                                 {% endif %}
                             </div>
                         </div>
@@ -44,3 +47,10 @@
             </div>
         </header>
         <!-- Header End -->
+
+        {% comment %} {% if user.is_authenticated %}
+        <a class="login-sign-up mx-3" href="{% url 'logout' %}">Cerrar sesión</a>
+        <div class="login-option">
+            <a class="get-start-btn" href="{% url 'my_account' %}">Mi cuenta</a>
+        </div>
+        {% endif %} {% endcomment %}

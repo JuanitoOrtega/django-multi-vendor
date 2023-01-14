@@ -6,7 +6,8 @@ from accounts.utils import send_notification
 class Vendor(models.Model):
     user = models.OneToOneField(User, related_name='user', on_delete=models.CASCADE, verbose_name='Usuario')
     user_profile = models.OneToOneField(UserProfile, related_name='userprofile', on_delete=models.CASCADE, verbose_name='Perfil de usuario')
-    vendor_name = models.CharField(max_length=50, verbose_name='Nombre del vendedor')
+    vendor_name = models.CharField(max_length=50, unique=True, verbose_name='Nombre del vendedor')
+    slug = models.SlugField(max_length=150, unique=True, verbose_name='URL amigable')
     vendor_license = models.ImageField(upload_to='vendor/license', blank=True, null=True, verbose_name='Licencia')
     is_approved = models.BooleanField(default=False, verbose_name='Aprobado')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Fecha')

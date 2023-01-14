@@ -23,7 +23,7 @@ class Category(models.Model):
 
 class FoodItem(models.Model):
     vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE, verbose_name='Vendedor')
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Categoría')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='fooditems', verbose_name='Categoría')
     food_title = models.CharField(max_length=50, unique=True, verbose_name='Título del plato')
     slug = models.SlugField(max_length=100, unique=True, verbose_name='URL amigable')
     description = models.TextField(max_length=250, blank=True, verbose_name='Descripción')

@@ -29,10 +29,10 @@ INSTALLED_APPS = [
     # Package
     'django_countries',
     # Apps
-    'core',
     'accounts',
     'vendors',
     'menu',
+    'marketplace',
 ]
 
 MIDDLEWARE = [
