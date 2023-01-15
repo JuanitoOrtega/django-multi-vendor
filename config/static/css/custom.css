@@ -19,6 +19,27 @@ span.text-danger ul li {
     font-size: 12px;
 }
 
-.link-food-by-cat:hover {
+.link-food-by-cat:hover,
+.link-hover:hover {
     text-decoration: none;
+}
+
+label.qty {
+    margin: 0 15px;
+}
+
+span.price {
+    margin-right: 20px;
+}
+
+#cart_counter {
+    border-radius: 50%;
+    position: relative;
+    bottom: 15px;
+    left: -5px;
+    min-width: 18px;
+}
+
+.icon-cart {
+    font-size: 20px;
 }

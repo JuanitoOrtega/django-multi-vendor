@@ -73,3 +73,67 @@ function onPlaceChanged () {
         }
     }
 }
+
+// Cart
+$(document).ready(function(){
+    // Add to cart
+    $('.add_to_cart').on('click', function(e){
+        e.preventDefault();
+
+        food_id = $(this).attr('data-id');
+        url = $(this).attr('data-url');
+        // console.log(food_id);
+
+        $.ajax({
+            type: 'GET',
+            url: url,
+            success: function(response) {
+                console.log(response);
+                if (response.status == 'login_required') {
+                    swal(response.message, '', 'warning').then(function() {
+                        window.location = '/login';
+                    });
+                } else if (response.status == 'Failed') {
+                    swal(response.message, '', 'error');
+                } else {
+                    $('#cart_counter').html(response.cart_counter['cart_count']);
+                    $('#qty-'+food_id).html(response.qty);
+                }
+            }
+        });
+    });
+
+    // Place the cart item quantity on load
+    $('.item-qty').each(function(e){
+        let the_id = $(this).attr('id');
+        let qty = $(this).attr('data-qty');
+        $('#'+the_id).html(qty);
+    });
+
+    // Decrease cart
+    $('.decrease_cart').on('click', function(e){
+        e.preventDefault();
+        
+        food_id = $(this).attr('data-id');
+        url = $(this).attr('data-url');
+        // cart_id = $(this).attr('id');
+        
+        $.ajax({
+            type: 'GET',
+            url: url,
+            success: function(response) {
+                console.log(response);
+                if (response.status == 'login_required') {
+                    swal(response.message, '', 'warning').then(function() {
+                        window.location = '/login';
+                    });
+                } else if (response.status == 'Failed') {
+                    swal(response.message, '', 'error');
+                } else {
+                    $('#cart_counter').html(response.cart_counter['cart_count']);
+                    $('#qty-'+food_id).html(response.qty);
+                }
+            }
+        });
+    });
+});
