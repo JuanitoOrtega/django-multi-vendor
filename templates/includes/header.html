@@ -24,7 +24,7 @@
                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 d-flex justify-content-end">
                             {% if user.is_authenticated %}
                             <div class="d-flex align-items-center">
-                                <a href="{% url 'marketplace' %}" class="mr-3 link-hover">
+                                <a href="{% url 'cart' %}" class="mr-3 link-hover">
                                     <i class="fa fa-shopping-cart text-danger icon-cart"></i>
                                     <span class="badge badge-warning" id="cart_counter">{{ cart_count }}</span>
                                 </a>

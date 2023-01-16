@@ -4,6 +4,7 @@ from .views import home
 
 from django.conf import settings
 from django.conf.urls.static import static
+from marketplace.views import cart
 
 
 urlpatterns = [
@@ -11,6 +12,8 @@ urlpatterns = [
     path('', home, name='home'),
     path('', include('accounts.urls')),
     path('marketplace/', include('marketplace.urls')),
+    # Cart
+    path('cart/', cart, name='cart'),
 ]
 
 if settings.DEBUG:
